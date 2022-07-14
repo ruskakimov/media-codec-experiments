@@ -1,10 +1,14 @@
 package com.kakimov.mediacodecexperiments
 
+import android.media.MediaCodec
+import android.media.MediaCodecList
+import android.media.MediaFormat
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import java.time.LocalTime
-import java.util.Timer
+import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +27,15 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity.runOnUiThread {
                 digitalClockView.text = currentTimeString()
             }
+        }
+
+        val videoFormat = MediaFormat.createVideoFormat("video/avc", 1920, 1080)
+        val codecName = MediaCodecList(MediaCodecList.REGULAR_CODECS).findEncoderForFormat(videoFormat)
+
+        Log.i("CODEC", "codec name: $codecName")
+
+        if (codecName != null) {
+            val codec = MediaCodec.createByCodecName(codecName)
         }
     }
 
